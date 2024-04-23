@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestProject.Entities {
-    public class Employ {
+    public class Task {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -13,13 +12,15 @@ namespace TestProject.Entities {
         [MaxLength(50)]
         public string Name { get; set; }
 
-        //TODO consider oop version
-        [Required]
-        public bool IsManager { get; set; }
+        [MaxLength(5000)]
+        public string? Description { get; set; }
 
-        public Employ(string name) {
+        [ForeignKey("FromProjectId")]
+        public Project? FromProject { get; set; }
+        public int FromProjectId { get; set; }
+
+        public Task(string name) {
             Name = name;
         }
-
     }
 }
