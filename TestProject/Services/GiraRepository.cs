@@ -2,25 +2,29 @@
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using TestProject.DbContexts;
 using TestProject.Entities;
+using TestProject.Models;
 
 namespace TestProject.Services {
-    public class EmployInfoRepository : IEmplyInfoRepository {
-        private readonly EmployContext _employContext;
+    public class GiraRepository : IGiraRepository {
+        private readonly GiraContext _giraContext;
 
-        public EmployInfoRepository(EmployContext employContext) {
-            _employContext = employContext ?? throw new ArgumentNullException(nameof(employContext));
+        public GiraRepository(GiraContext employContext) {
+            _giraContext = employContext ?? 
+                throw new ArgumentNullException(nameof(employContext));
         }
 
-        public async Task<Employ?> GetEmployAsync(int id) {
-            return await _employContext.Employs.Where(employ => employ.Id == id).FirstOrDefaultAsync();
+        public async Task<Employee?> GetEmployAsync(int id) {
+            return await _giraContext.Employs
+                .Where(employ => employ.Id == id).FirstOrDefaultAsync();
         }
 
 
         
-        public async Task<(IEnumerable<Employ>, PaginationMetadata)> GetEmploysAsync(string? nameFilter, string? searchQuery,
+        public async Task<(IEnumerable<Employee>, PaginationMetadata)> 
+            GetEmploysAsync(string? nameFilter, string? searchQuery,
             int pageNumber, int pageSize) {
             
-            var collection = _employContext.Employs as IQueryable<Employ>;
+            var collection = _giraContext.Employs as IQueryable<Employee>;
 
             var totalItemCount = await collection.CountAsync();
 
@@ -46,8 +50,7 @@ namespace TestProject.Services {
 
             if(!string.IsNullOrWhiteSpace(searchQuery)) {
                 searchQuery = searchQuery.Trim();
-                collection = collection.Where(x => x.Name.Contains(searchQuery)
-                    || (x.Description != null && x.Description.Contains(searchQuery)));
+                collection = collection.Where(x => x.Name.Contains(searchQuery));
             }
 
             var collectionToReturn = await collection
@@ -60,18 +63,28 @@ namespace TestProject.Services {
         }
 
         public async Task<bool> EmployExist(int id) {
-            return await _employContext.Employs.Where(employ => employ.Id == id).CountAsync() > 0;
+            return await _giraContext.Employs.Where(employ => employ.Id == id).CountAsync() > 0;
         }
 
-        public async Task AddEmployAsync(Employ employ) {
+        public async Task AddEmployAsync(Employee employ) {
             if (await EmployExist(employ.Id)) {
                 return;
             }
-            _employContext.Employs.Add(employ);
+            _giraContext.Employs.Add(employ);
+        }
+
+        public async Task<IEnumerable<Project>> GetProjectsAsync() {
+            return await _giraContext.Projects.Include(p => p.Tasks).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Project>> GetAssignedProjectsAsync(int employeeId) {
+            var collection = _giraContext.Projects as IQueryable<Project>;
+            var filteredCollection = collection.Where(p => p.Employees.Select(e => e.Id).Contains(employeeId));
+            return await filteredCollection.ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync() {
-            return await _employContext.SaveChangesAsync() >= 0;
+            return await _giraContext.SaveChangesAsync() >= 0;
         }
     }
 }

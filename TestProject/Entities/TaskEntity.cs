@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestProject.Entities {
-    public class Task {
+    public class TaskEntity {
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,7 +19,7 @@ namespace TestProject.Entities {
         public Project? FromProject { get; set; }
         public int FromProjectId { get; set; }
 
-        public Task(string name) {
+        public TaskEntity(string name) {
             Name = name;
         }
     }

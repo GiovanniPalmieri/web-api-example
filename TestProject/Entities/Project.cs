@@ -11,17 +11,11 @@ namespace TestProject.Entities {
         [MaxLength(50)]
         public string Name { get; set; }
 
-        [Required]
-        public Employ Manager { get; set; }
+        public Manager Manager { get; set; }
 
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public ICollection<Employee> Employees { get;  }
 
+        public ICollection<TaskEntity> Tasks { get; set; }
 
-        public ICollection<Employ> AssignedTo { get; set; } = new List<Employ>();
-
-        public Project(string name, Employ manager) {
-            Name = name;
-            Manager = manager;
-        }
     }
 }

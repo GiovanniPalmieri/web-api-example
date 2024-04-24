@@ -11,9 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<EmployContext>(dbContextOptions =>
-    dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:EmployDbConnectionString"]));
-builder.Services.AddScoped<IEmplyInfoRepository, EmployInfoRepository>();
+builder.Services.AddDbContext<GiraContext>(dbContextOptions =>
+    dbContextOptions.UseNpgsql(builder.Configuration["ConnectionStrings:EmployDbConnectionString"]));
+
+builder.Services.AddScoped<IGiraRepository, GiraRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options => {

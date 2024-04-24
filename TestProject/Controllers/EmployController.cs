@@ -15,17 +15,17 @@ namespace TestProject.Controllers {
     //[ApiVersion(2, Deprecated = true)]
     public class EmployController : ControllerBase {
         private const int maxEmployPageSize = 2;
-        private readonly IEmplyInfoRepository _employInfoRepository;
+        private readonly IGiraRepository _giraRepository;
         private readonly IMapper _mapper;
 
-        public EmployController(IEmplyInfoRepository emplyInfoRepository, IMapper mapper) {
-            _employInfoRepository = emplyInfoRepository;
+        public EmployController(IGiraRepository emplyInfoRepository, IMapper mapper) {
+            _giraRepository = emplyInfoRepository;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployDto>> GetEmploy(int id) {
-            var employ = await _employInfoRepository.GetEmployAsync(id);
+            var employ = await _giraRepository.GetEmployAsync(id);
             if (employ == null) {
                 return NotFound();
             }
@@ -50,7 +50,7 @@ namespace TestProject.Controllers {
                 pageSize = maxEmployPageSize;
             }
 
-            var (employs, paginationMetadata) = await _employInfoRepository
+            var (employs, paginationMetadata) = await _giraRepository
                 .GetEmploysAsync(name, searchQuery, pageNumber, pageSize);
 
             Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
@@ -61,10 +61,10 @@ namespace TestProject.Controllers {
         [HttpPost("create")]
         public async Task<ActionResult<EmployDto>> CreateEmploy(EmployForCreationDto employ) {
 
-            var finalEmploy = _mapper.Map<Employ>(employ);
+            var finalEmploy = _mapper.Map<Employee>(employ);
 
-            await _employInfoRepository.AddEmployAsync(finalEmploy);
-            await _employInfoRepository.SaveChangesAsync();
+            await _giraRepository.AddEmployAsync(finalEmploy);
+            await _giraRepository.SaveChangesAsync();
 
             var employToReturn = _mapper.Map<EmployDto>(finalEmploy);
 

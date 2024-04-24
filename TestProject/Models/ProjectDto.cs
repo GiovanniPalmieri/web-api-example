@@ -1,0 +1,7 @@
+﻿namespace TestProject.Models {
+    public class ProjectDto {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public IEnumerable<int> TasksIds { get; set; } = new List<int>();
+    }
+}
