@@ -33,7 +33,7 @@ namespace TestProject.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("EmployeeProject");
+                    b.ToTable("EmployeeProject", (string)null);
                 });
 
             modelBuilder.Entity("TestProject.Entities.Employee", b =>
@@ -51,7 +51,7 @@ namespace TestProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employs");
+                    b.ToTable("Employs", (string)null);
                 });
 
             modelBuilder.Entity("TestProject.Entities.Manager", b =>
@@ -68,7 +68,7 @@ namespace TestProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Managers");
+                    b.ToTable("Managers", (string)null);
                 });
 
             modelBuilder.Entity("TestProject.Entities.Project", b =>
@@ -91,7 +91,7 @@ namespace TestProject.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("TestProject.Entities.TaskEntity", b =>
@@ -118,7 +118,7 @@ namespace TestProject.Migrations
 
                     b.HasIndex("FromProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeProject", b =>
