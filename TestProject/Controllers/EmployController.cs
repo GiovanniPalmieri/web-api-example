@@ -11,7 +11,7 @@ namespace TestProject.Controllers {
     [ApiController]
     //per testare il versionamento
     //[Authorize(Policy = "MustBeOverTheAgeOf30")]
-    [Route("api/employ")]
+    [Route("employee")]
     //[ApiVersion(2, Deprecated = true)]
     public class EmployController : ControllerBase {
         private const int maxEmployPageSize = 2;

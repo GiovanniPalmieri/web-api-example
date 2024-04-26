@@ -6,7 +6,7 @@ using TestProject.Services;
 
 namespace TestProject.Controllers {
     [ApiController]
-    [Route("api/project")]
+    [Route("employee/{employeeId}/project")]
     public class ProjectController : ControllerBase {
 
         private readonly IGiraRepository _giraRepository;
@@ -18,19 +18,19 @@ namespace TestProject.Controllers {
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjects() {
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjects(int employeeId) {
             var projects = await _giraRepository.GetProjectsAsync();
             return Ok(_mapper.Map<IEnumerable<ProjectDto>>(projects));
         }
 
-        [HttpGet("{id}", Name ="GetProject")]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAssignedProjects(int id) {
-            var projects = await _giraRepository.GetAssignedProjectsAsync(id);
+        [HttpGet("{projectId}", Name ="GetProject")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAssignedProjects(int employeeId,int projectId) {
+            var projects = await _giraRepository.GetAssignedProjectsAsync(projectId);
             return Ok(_mapper.Map<IEnumerable<ProjectDto>>(projects));
         }
 
         [HttpDelete("{projectId}")]
-        public async Task<ActionResult> DeleteProject(int projectId) {
+        public async Task<ActionResult> DeleteProject(int employeeId, int projectId) {
             if(!await _giraRepository.ProjectExistsAsync(projectId)) {
                 return NotFound();
             }
@@ -42,7 +42,7 @@ namespace TestProject.Controllers {
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProjectToReturnDto>> CreateProject(ProjectForCreationDto project) {
+        public async Task<ActionResult<ProjectToReturnDto>> CreateProject(int projectId, ProjectForCreationDto project) {
             var manager = await _giraRepository.GetManagerAsync(project.managerId);
             if(manager == null) {
                 return NotFound(); 

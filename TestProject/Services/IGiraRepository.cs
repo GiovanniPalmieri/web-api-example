@@ -2,15 +2,11 @@
 
 namespace TestProject.Services {
     public interface IGiraRepository {
-
         Task<Employee?> GetEmployAsync(int id);
-
         Task AddEmployAsync(Employee employ);
-
         Task<bool> SaveChangesAsync();
         Task<(IEnumerable<Employee>,PaginationMetadata)> GetEmploysAsync(string? nameFilter, string? searchQuery,
             int pageNumber, int pageSize);
-
         Task<IEnumerable<Project>> GetProjectsAsync();
         Task<IEnumerable<Project>> GetAssignedProjectsAsync(int employeeId);
         Task<bool> ProjectExistsAsync(int projectId);
@@ -21,5 +17,7 @@ namespace TestProject.Services {
         Task<IEnumerable<TaskEntity>> GetTasksForProjectAsync(int projectId);
         Task<Project?> GetProjectAsync(int projectId);
         Task AddTaskAsync(TaskEntity task);
+        Task<bool> TaskExist(int taskId);
+        Task DeleteTaskAsync(int taskId);
     }
 }
