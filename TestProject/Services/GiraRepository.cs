@@ -77,6 +77,10 @@ namespace TestProject.Services {
             return await _giraContext.Projects.Include(p => p.Tasks).ToListAsync();
         }
 
+        public async Task<IEnumerable<TaskEntity>> GetTasksForProjectAsync(int projectId) {
+            return await _giraContext.Tasks.Where(t => t.FromProject.Id == projectId).ToListAsync();
+        }
+
         public async Task<IEnumerable<Project>> GetAssignedProjectsAsync(int employeeId) {
             var collection = _giraContext.Projects as IQueryable<Project>;
             var filteredCollection = collection.Where(p => p.Employees.Select(e => e.Id).Contains(employeeId));
@@ -85,6 +89,32 @@ namespace TestProject.Services {
 
         public async Task<bool> SaveChangesAsync() {
             return await _giraContext.SaveChangesAsync() >= 0;
+        }
+
+        public async Task<bool> ProjectExistsAsync(int projectId) {
+            return await _giraContext.Projects.AnyAsync(p => p.Id == projectId);  
+        }
+
+        public async Task DeleteProjectAsync(int projectId) {
+            var project = await _giraContext.Projects.FindAsync(projectId);
+            if (project != null) {
+                _giraContext.Projects.Remove(project);
+            }
+        }
+
+        public async Task<bool> ManagerExists(int managerId) {
+            return await _giraContext.Managers.AnyAsync(p => p.Id == managerId);
+        }
+
+        public async Task AddProjectAsync(Project project) {
+            if (await ProjectExistsAsync(project.Id)) {
+                return;
+            }
+            await _giraContext.Projects.AddAsync(project);
+        }
+
+        public async Task<Manager?> GetManagerAsync(int managerId) {
+            return await _giraContext.Managers.FindAsync(managerId);
         }
     }
 }

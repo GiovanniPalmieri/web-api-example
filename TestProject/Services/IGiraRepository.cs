@@ -13,5 +13,11 @@ namespace TestProject.Services {
 
         Task<IEnumerable<Project>> GetProjectsAsync();
         Task<IEnumerable<Project>> GetAssignedProjectsAsync(int employeeId);
+        Task<bool> ProjectExistsAsync(int projectId);
+        Task DeleteProjectAsync(int projectId);
+        Task<bool> ManagerExists(int managerId);
+        Task AddProjectAsync(Project project);
+        Task<Manager?> GetManagerAsync(int managerId);
+        Task<IEnumerable<TaskEntity>> GetTasksForProjectAsync(int projectId);
     }
 }
