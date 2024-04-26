@@ -19,5 +19,7 @@ namespace TestProject.Services {
         Task AddProjectAsync(Project project);
         Task<Manager?> GetManagerAsync(int managerId);
         Task<IEnumerable<TaskEntity>> GetTasksForProjectAsync(int projectId);
+        Task<Project?> GetProjectAsync(int projectId);
+        Task AddTaskAsync(TaskEntity task);
     }
 }

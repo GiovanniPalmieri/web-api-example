@@ -113,6 +113,22 @@ namespace TestProject.Services {
             await _giraContext.Projects.AddAsync(project);
         }
 
+        public async Task<Project?> GetProjectAsync(int projectId) {
+            return await _giraContext.Projects.FindAsync(projectId);
+        }
+
+        public async Task AddTaskAsync(TaskEntity task) {
+            if (await TaskExist(task.Id)) {
+                return;
+            }
+
+            await _giraContext.Tasks.AddAsync(task);
+        }
+
+        public async Task<bool> TaskExist(int id) {
+           return await _giraContext.Tasks.AnyAsync(t => t.Id == id);
+        }
+
         public async Task<Manager?> GetManagerAsync(int managerId) {
             return await _giraContext.Managers.FindAsync(managerId);
         }

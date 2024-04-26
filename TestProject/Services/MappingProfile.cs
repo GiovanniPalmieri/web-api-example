@@ -12,6 +12,9 @@ namespace TestProject.Services {
             CreateMap<Project, ProjectToReturnDto>();
             CreateMap<TaskEntity, TaskDto>()
                 .ForMember(dest => dest.ProjectId, act => act.MapFrom(src => src.FromProject.Id));
+            CreateMap<TaskForCreationDto, TaskEntity>();
+            CreateMap<TaskEntity, TaskToReturnDto>()
+                .ForMember(dest => dest.ProjectId, act => act.MapFrom(src => src.FromProject.Id));
         }
     }
 }
