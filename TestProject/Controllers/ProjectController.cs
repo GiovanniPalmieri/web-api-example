@@ -42,7 +42,7 @@ namespace TestProject.Controllers {
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProjectDto>> CreateProject(ProjectForCreationDto project) {
+        public async Task<ActionResult<ProjectToReturnDto>> CreateProject(ProjectForCreationDto project) {
             var manager = await _giraRepository.GetManagerAsync(project.managerId);
             if(manager == null) {
                 return NotFound(); 
