@@ -129,6 +129,13 @@ namespace TestProject.Services {
            return await _giraContext.Tasks.AnyAsync(t => t.Id == id);
         }
 
+        public async Task DeleteTaskAsync(int taskId) { 
+            var task = await _giraContext.Tasks.FindAsync(taskId);
+            if (task == null) return;
+
+            _giraContext.Tasks.Remove(task);
+        }
+
         public async Task<Manager?> GetManagerAsync(int managerId) {
             return await _giraContext.Managers.FindAsync(managerId);
         }
